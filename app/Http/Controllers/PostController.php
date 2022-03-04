@@ -7,79 +7,47 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Post $post)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Post $post)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Post $post)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Post $post)
-    {
-        //
-    }
+        // all posts
+        public function index()
+        {
+            $posts = Post::all()->toArray();
+            return array_reverse($posts);
+        }
+     
+        // add post
+        public function add(Request $request)
+        {
+            $post = new Post([
+                'title' => $request->input('title'),
+                'description' => $request->input('description')
+            ]);
+            $post->save();
+     
+            return response()->json('The post successfully added');
+        }
+     
+        // edit post
+        public function edit($id)
+        {
+            $post = Post::find($id);
+            return response()->json($post);
+        }
+     
+        // update post
+        public function update($id, Request $request)
+        {
+            $post = Post::find($id);
+            $post->update($request->all());
+     
+            return response()->json('The post successfully updated');
+        }
+     
+        // delete post
+        public function delete($id)
+        {
+            $post = Post::find($id);
+            $post->delete();
+     
+            return response()->json('The post successfully deleted');
+        }
 }
